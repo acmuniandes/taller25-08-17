@@ -1,0 +1,38 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+
+<div id='app'>
+	<h1 onclick="prompt('hola')">Hola</h1>
+	<h2>{{message}}</h2>
+	<h2>{{nuevaPersona}}</h2>
+	<ul>
+		<li v-for='persona in personas'>{{persona}}</li>
+	</ul>
+	<input  id='miInput' class='miclase' v-model='nuevaPersona'  placeholder='ingresa tu nombre'></input>
+	<button @click='agregarPersona()' >Boton ACM</button>
+</div>
+
+<script>
+var app = new Vue({
+	el: '#app',
+	data: {
+		message: 'Hello ACM!',
+		personas: [],
+		nuevaPersona: ''
+	},
+	methods:{
+		agregarPersona: function(){
+			axios.post('/personas/' + this.nuevaPersona).then((data)=>{
+				this.personas = data.data
+			})
+		}
+	},
+	created: function(){
+			axios.get('/personas').then((data)=>{
+				this.personas = data.data
+			})
+		}
+
+})
+
+</script>
